@@ -1,0 +1,18 @@
+server:
+  port: 12800
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_base?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useAffectedRows=true&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: admin123!@#
+    driverClassName: com.mysql.cj.jdbc.Driver
+jwt:
+  header: Authorization
+  refresh_token_header: RefreshToken
+  secret: mySecret
+  #token有效期十天
+  access_token_expiration: 3000
+  refresh_token_expiration: 864000
+  tokenHead: "Bearer "
