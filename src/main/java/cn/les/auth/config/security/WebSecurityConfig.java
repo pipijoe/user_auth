@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -33,16 +34,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationTokenFilter authenticationTokenFilter;
 
-    private final MyFilterSecurityInterceptor myFilterSecurityInterceptor;
-
     @Autowired
     public WebSecurityConfig(JwtAuthenticationEntryPoint unauthorizedHandler,
                              @Qualifier("CustomUserDetailsService") UserDetailsService customUserDetailsService,
-                             JwtAuthenticationTokenFilter authenticationTokenFilter, MyFilterSecurityInterceptor myFilterSecurityInterceptor) {
+                             JwtAuthenticationTokenFilter authenticationTokenFilter) {
         this.unauthorizedHandler = unauthorizedHandler;
         this.customUserDetailsService = customUserDetailsService;
         this.authenticationTokenFilter = authenticationTokenFilter;
-        this.myFilterSecurityInterceptor = myFilterSecurityInterceptor;
     }
 
     @Autowired
@@ -84,7 +82,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 添加JWT filter
         httpSecurity
                 .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-        httpSecurity.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class);
     }
     @Override
     public void configure(WebSecurity web) {

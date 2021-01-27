@@ -23,7 +23,6 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
         if (collection == null) {
             return;
         }
-
         //authentication在未登陆的情况下为匿名用户，登陆状态下为用户权限
         //collection为MetadataSource查询数据库获得的访问该资源的权限
         for (ConfigAttribute configAttribute : collection) {
