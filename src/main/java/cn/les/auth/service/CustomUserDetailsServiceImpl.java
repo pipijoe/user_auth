@@ -1,5 +1,6 @@
 package cn.les.auth.service;
 
+import cn.les.auth.config.security.SecurityProps;
 import cn.les.auth.entity.UserDetail;
 import cn.les.auth.entity.auth.RoleDO;
 import cn.les.auth.entity.auth.UserDO;
@@ -42,7 +43,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         UserDO user = opt.get();
 
         Set<GrantedAuthority> grantedAuthorities = userRoleDao.findByUserId(user.getId()).stream()
-                .map(role -> new SimpleGrantedAuthority(roleDao.findById(role.getRoleId()).orElse(new RoleDO()).getRoleName()))
+                .map(role -> new SimpleGrantedAuthority(roleDao.findById(role.getRoleId()).orElse(new RoleDO(0L, SecurityProps.ROLE_ANONYMOUS)).getRoleName()))
                 .collect(Collectors.toSet());
 
         return UserDetail.builder()

@@ -1,6 +1,8 @@
 package cn.les.auth.entity.auth;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -16,6 +18,8 @@ import javax.persistence.Table;
 @DynamicInsert
 @DynamicUpdate
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RoleDO {
     @Id
     private Long id;

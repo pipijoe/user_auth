@@ -38,14 +38,13 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
-        String anonymousUser = "anonymousUser";
         HttpServletRequest request = ((FilterInvocation) o).getHttpRequest();
         //获取用户角色
         //获取该用户访问该资源权限，没有获取到则返回匿名用户权限
         Set<String> roles = new HashSet<>();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (anonymousUser.equals(authentication.getPrincipal())) {
-            return SecurityConfig.createList("ROLE_ANONYMOUS");
+        if (SecurityProps.ANONYMOUS_USER.equals(authentication.getPrincipal())) {
+            return SecurityConfig.createList(SecurityProps.ROLE_ANONYMOUS);
         }
         authentication.getAuthorities().forEach(a -> rolePermissionMap.get(a.getAuthority()).forEach(c -> {
             AntPathRequestMatcher matcher = new AntPathRequestMatcher(c.getPath(), c.getMethod());
@@ -59,7 +58,7 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
                     .map(SecurityConfig::new)
                     .collect(Collectors.toList());
         }
-        return SecurityConfig.createList("ROLE_ANONYMOUS");
+        return SecurityConfig.createList(SecurityProps.ROLE_ANONYMOUS);
     }
 
     /**
