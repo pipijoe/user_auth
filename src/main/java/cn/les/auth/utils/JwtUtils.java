@@ -3,13 +3,12 @@ package cn.les.auth.utils;
 import cn.les.auth.entity.UserDetail;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Joetao
@@ -19,10 +18,7 @@ import java.util.Map;
 @Component
 public class JwtUtils {
     private static final String CLAIM_KEY_USER_ID = "userId";
-    private static final String CLAIM_KEY_ROLE_ID = "roleId";
-    private static final String CLAIM_KEY_ROLE_NAME = "roleName";
-    private static final String CLAIM_KEY_ROLE_NAME_ZH = "roleNameZh";
-    private static final String CLAIM_KEY_USER_NICKNAME = "nickname";
+    private static final String CLAIM_KEY_AUTHORITIES = "authorities";
     private final Map<String, String> tokenMap = new HashMap<>();
 
     @Value("${jwt.secret}")
@@ -43,12 +39,11 @@ public class JwtUtils {
         }
         String username = claims.getSubject();
         String userId = claims.get(CLAIM_KEY_USER_ID).toString();
-        return UserDetail.builder().id(Long.parseLong(userId)).username(username).build();
-    }
-
-    public UserDetail getUserDetailFromSecurityContext() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (UserDetail) authentication.getPrincipal();
+        String authorities = claims.get(CLAIM_KEY_AUTHORITIES).toString();
+        Set<GrantedAuthority> grantedAuthorities = Arrays.stream(authorities.split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
+        return UserDetail.builder().id(Long.parseLong(userId)).username(username).authorities(grantedAuthorities).build();
     }
 
     public String generateAccessToken(UserDetail userDetail) {
@@ -134,8 +129,9 @@ public class JwtUtils {
 
     public boolean removeToken(String token) {
         final UserDetail userDetail = getUserDetailFromToken(token);
-        if (tokenMap.containsKey(userDetail.getId()) && tokenMap.get(userDetail.getId()).equals(token)) {
-            tokenMap.remove(userDetail.getId());
+        String id = String.valueOf(userDetail.getId());
+        if (tokenMap.containsKey(id) && tokenMap.get(id).equals(token)) {
+            tokenMap.remove(id);
             return true;
         }
         return false;
@@ -144,6 +140,10 @@ public class JwtUtils {
     private Map<String, Object> generateClaims(UserDetail userDetail) {
         Map<String, Object> claims = new HashMap<>(8);
         claims.put(CLAIM_KEY_USER_ID, String.valueOf(userDetail.getId()));
+        claims.put(CLAIM_KEY_AUTHORITIES, userDetail.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(",")));
         return claims;
     }
 

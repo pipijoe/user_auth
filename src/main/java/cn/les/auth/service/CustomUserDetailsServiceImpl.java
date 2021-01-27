@@ -1,8 +1,9 @@
 package cn.les.auth.service;
 
-import cn.les.auth.entity.LoginUser;
 import cn.les.auth.entity.UserDetail;
+import cn.les.auth.entity.auth.RoleDO;
 import cn.les.auth.entity.auth.UserDO;
+import cn.les.auth.repo.IRoleDao;
 import cn.les.auth.repo.IUserDao;
 import cn.les.auth.repo.IUserRoleDao;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,8 +28,11 @@ import java.util.stream.Collectors;
 public class CustomUserDetailsServiceImpl implements UserDetailsService {
     @Resource
     private IUserDao userDao;
+
     @Resource
-    private IUserRoleDao roleDao;
+    private IRoleDao roleDao;
+    @Resource
+    private IUserRoleDao userRoleDao;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<UserDO> opt = userDao.findByUsernameAndDeleteAtEquals(username, 0L);
@@ -37,8 +41,8 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         }
         UserDO user = opt.get();
 
-        Set<GrantedAuthority> grantedAuthorities = roleDao.findByUserId(user.getId()).stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRoleId().toString()))
+        Set<GrantedAuthority> grantedAuthorities = userRoleDao.findByUserId(user.getId()).stream()
+                .map(role -> new SimpleGrantedAuthority(roleDao.findById(role.getRoleId()).orElse(new RoleDO()).getRoleName()))
                 .collect(Collectors.toSet());
 
         return UserDetail.builder()

@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author joetao
  */
 public interface IRoleDao extends JpaRepository<RoleDO, Long> {
+
 }

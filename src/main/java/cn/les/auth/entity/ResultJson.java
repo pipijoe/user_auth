@@ -3,6 +3,7 @@ package cn.les.auth.entity;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * @author Joetao
@@ -17,7 +18,7 @@ public class ResultJson<T> implements Serializable {
     private T data;
 
     public static ResultJson<Object> ok() {
-        return ok(new Object());
+        return ok(new HashMap<>(1));
     }
     public static <T> ResultJson<T> ok(T data) {
         return new ResultJson<>(ResultCode.SUCCESS, data);

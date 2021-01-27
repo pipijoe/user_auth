@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @time 2021/1/26 11:21 上午
  * @Email cutesimba@163.com
  */
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1")
 @RestController
 public class UserController {
 
-    @GetMapping("/")
+    @GetMapping("/users")
     public ResultJson getUsers() {
         return ResultJson.ok();
     }

@@ -46,7 +46,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         if (token != null && jwtUtils.isAccessTokenExpired(token)) {
             String refreshToken = request.getHeader(this.refreshTokenHeader);
-            token = jwtUtils.refreshToken(refreshToken);
+            token = StringUtils.hasLength(refreshToken) ? jwtUtils.refreshToken(refreshToken) : token;
             if (token == null) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setCharacterEncoding("UTF-8");

@@ -20,15 +20,13 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
 
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
-        String permitAll = "permitAll";
         if (collection == null) {
             return;
         }
 
+        //authentication在未登陆的情况下为匿名用户，登陆状态下为用户权限
+        //collection为MetadataSource查询数据库获得的访问该资源的权限
         for (ConfigAttribute configAttribute : collection) {
-            if (configAttribute.toString().equals(permitAll)) {
-                return;
-            }
             String roleName = configAttribute.getAttribute();
             for (GrantedAuthority ga : authentication.getAuthorities()) {
                 if (roleName != null && roleName.equals(ga.getAuthority())) {

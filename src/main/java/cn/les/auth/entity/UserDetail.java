@@ -24,7 +24,7 @@ public class UserDetail implements UserDetails {
     private String username;
     private String password;
     private boolean enabled;
-    private final Set<GrantedAuthority> authorities;
+    private Set<GrantedAuthority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
