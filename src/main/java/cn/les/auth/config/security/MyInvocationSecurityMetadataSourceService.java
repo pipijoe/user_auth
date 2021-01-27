@@ -46,7 +46,7 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
         if (SecurityProps.ANONYMOUS_USER.equals(authentication.getPrincipal())) {
             return SecurityConfig.createList(SecurityProps.ROLE_ANONYMOUS);
         }
-        authentication.getAuthorities().forEach(a -> rolePermissionMap.get(a.getAuthority()).forEach(c -> {
+        authentication.getAuthorities().forEach(a -> rolePermissionMap.getOrDefault(a.getAuthority(), new HashSet<>()).forEach(c -> {
             AntPathRequestMatcher matcher = new AntPathRequestMatcher(c.getPath(), c.getMethod());
             if (matcher.matches(request)) {
                 roles.add(a.getAuthority());
