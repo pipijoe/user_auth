@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 26/01/2021 16:31:08
+ Date: 27/01/2021 15:50:30
 */
 
 SET NAMES utf8mb4;
@@ -65,7 +65,7 @@ CREATE TABLE `sys_menu_permission` (
   `gmt_modified` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uk_menu_permission` (`menu_id`,`permission_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu_permission
@@ -74,6 +74,7 @@ BEGIN;
 INSERT INTO `sys_menu_permission` VALUES (1, 3, 2, '2020-10-19 09:55:48', '2021-01-26 11:19:49');
 INSERT INTO `sys_menu_permission` VALUES (2, 3, 4, '2020-10-19 09:55:48', '2021-01-26 11:19:51');
 INSERT INTO `sys_menu_permission` VALUES (3, 3, 5, '2020-10-20 09:02:53', '2021-01-26 11:19:52');
+INSERT INTO `sys_menu_permission` VALUES (4, 3, 6, '2021-01-27 14:01:26', '2021-01-27 14:01:26');
 COMMIT;
 
 -- ----------------------------
@@ -91,7 +92,7 @@ CREATE TABLE `sys_permission` (
   `gmt_create` datetime DEFAULT CURRENT_TIMESTAMP,
   `gmt_modified` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_permission
@@ -102,6 +103,7 @@ INSERT INTO `sys_permission` VALUES (2, 3, 1, '新增用户', '/users', 'POST', 
 INSERT INTO `sys_permission` VALUES (3, 0, 0, '用户', '', '', 1, '2020-10-16 17:03:31', '2021-01-26 11:19:24');
 INSERT INTO `sys_permission` VALUES (4, 3, 1, '修改用户', '/users/*', 'PUT', 2, '2020-10-16 17:04:11', '2021-01-26 11:19:18');
 INSERT INTO `sys_permission` VALUES (5, 3, 1, '删除用户', '/users', 'DELETE', 3, '2020-10-16 17:05:38', '2021-01-26 11:19:20');
+INSERT INTO `sys_permission` VALUES (6, 0, 1, '查询用户', '/api/v1/users', 'GET', 4, '2021-01-27 14:01:05', '2021-01-27 14:30:50');
 COMMIT;
 
 -- ----------------------------
