@@ -16,7 +16,7 @@ import javax.validation.Valid;
  * @time 2021/1/26 11:21 上午
  * @Email cutesimba@163.com
  */
-@RequestMapping("/api/v1/login")
+@RequestMapping("/api/v1")
 @RestController
 public class LoginController {
     private final LoginService loginService;
@@ -25,7 +25,7 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "/login")
     public ResultJson login(@Valid @RequestBody LoginUserDTO user) {
         UserVO userVO = loginService.login(user.getUsername(), user.getPassword());
         return ResultJson.ok(userVO);

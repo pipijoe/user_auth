@@ -1,0 +1,18 @@
+= Learn Spring REST Docs
+:toc: left
+
+Learn how to use Spring REST Docs based on Spring Boot2 and JUnit5.
+
+[[user-it]]
+== 1. 用户接口
+
+[[user-login]]
+=== 1.1 登录
+operation::HelloControllerTest/login[]
+
+[[user-query]]
+=== 1.2 用户查询
+
+提供用户查询
+
+operation::HelloControllerTest/users[]
