@@ -50,6 +50,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
                 .id(user.getId())
                 .username(user.getUsername())
                 .password(user.getPassword())
+                .nickname(user.getNickname())
                 .enabled(user.getState() != 1)
                 .authorities(Collections.unmodifiableSet(grantedAuthorities))
                 .build();

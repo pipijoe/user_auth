@@ -15,4 +15,4 @@ operation::HelloControllerTest/login[]
 
 提供用户查询
 
-operation::HelloControllerTest/users[]
+operation::HelloControllerTest/getUserIndex[]

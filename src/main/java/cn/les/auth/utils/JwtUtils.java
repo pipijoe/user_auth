@@ -3,8 +3,10 @@ package cn.les.auth.utils;
 import cn.les.auth.entity.UserDetail;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class JwtUtils {
     private static final String CLAIM_KEY_USER_ID = "userId";
     private static final String CLAIM_KEY_AUTHORITIES = "authorities";
+    private static final String CLAIM_KEY_NICKNAME = "nickName";
     private final Map<String, String> tokenMap = new HashMap<>();
 
     @Value("${jwt.secret}")
@@ -40,10 +43,21 @@ public class JwtUtils {
         String username = claims.getSubject();
         String userId = claims.get(CLAIM_KEY_USER_ID).toString();
         String authorities = claims.get(CLAIM_KEY_AUTHORITIES).toString();
+        String nickname = claims.get(CLAIM_KEY_NICKNAME).toString();
         Set<GrantedAuthority> grantedAuthorities = Arrays.stream(authorities.split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toSet());
-        return UserDetail.builder().id(Long.parseLong(userId)).username(username).authorities(grantedAuthorities).build();
+        return UserDetail.builder()
+                .id(Long.parseLong(userId))
+                .username(username)
+                .authorities(grantedAuthorities)
+                .nickname(nickname)
+                .build();
+    }
+
+    public UserDetail getUserDetailFromAuthContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (UserDetail) authentication.getPrincipal();
     }
 
     public String generateAccessToken(UserDetail userDetail) {
@@ -144,6 +158,7 @@ public class JwtUtils {
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(",")));
+        claims.put(CLAIM_KEY_NICKNAME, userDetail.getNickname());
         return claims;
     }
 

@@ -1,6 +1,8 @@
 package cn.les.auth.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -11,6 +13,8 @@ import java.util.HashMap;
  * Created at 2018/3/8.
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ResultJson<T> implements Serializable {
     private static final long serialVersionUID = 783015033603078674L;
     private int code;
