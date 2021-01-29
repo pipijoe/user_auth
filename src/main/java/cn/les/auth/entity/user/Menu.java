@@ -2,6 +2,8 @@ package cn.les.auth.entity.user;
 
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -11,8 +13,25 @@ import java.util.List;
  */
 @Data
 public class Menu {
-    private String name;
-    private String icon;
-    private int type;
-    private List<Menu> children;
+    private Long id;
+    private Long parentId;
+    private String menuName;
+    private String menuIcon;
+    private Integer type;
+    private List<Menu> children = new ArrayList<>();
+
+    public void setChildren(List<Menu> list) {
+        if (list.isEmpty()) {
+            return;
+        }
+        Iterator<Menu> menuIterator = list.iterator();
+        while (menuIterator.hasNext()) {
+            Menu menu = menuIterator.next();
+            if (menu.getParentId().equals(this.id)) {
+                children.add(menu);
+                menuIterator.remove();
+            }
+        }
+        children.forEach(menu -> menu.setChildren(list));
+    }
 }

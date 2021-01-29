@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class UserIndex {
     private Long id;
-    private List<Menu> menus;
     private String name;
     private String nickname;
+    private List<Menu> menus;
 }
