@@ -6,3 +6,6 @@ spring security, jwt, spring boot 动态菜单权限校验
 * 增加spring rest docs
 * 优化了单元测试，增加了过滤器和测试前登陆
 * 增加用户管理等接口
+
+### 2021-1-29:
+* 完成登录用户的菜单查询
