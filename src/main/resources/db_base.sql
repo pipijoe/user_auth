@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 27/01/2021 15:50:30
+ Date: 29/01/2021 11:40:42
 */
 
 SET NAMES utf8mb4;
@@ -42,15 +42,13 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_menu` VALUES (1, 0, '首页', 1, '首页', '/', '', 'el-icon-s-home', 0, 1, '2020-10-14 16:41:34', '2021-01-26 11:14:01');
-INSERT INTO `sys_menu` VALUES (2, 0, '系统管理', 0, '系统管理', '', '', '', 0, 3, '2020-10-14 17:10:14', '2021-01-26 11:14:11');
-INSERT INTO `sys_menu` VALUES (3, 2, '用户管理', 1, '用户管理', '/system/userAdmin', '', '', 0, 1, '2020-10-15 08:49:21', '2021-01-26 11:14:33');
+INSERT INTO `sys_menu` VALUES (2, 0, '系统管理', 0, '系统管理', '/system', '', '', 0, 1, '2020-10-14 17:10:14', '2021-01-29 10:08:13');
+INSERT INTO `sys_menu` VALUES (3, 2, '用户管理', 1, '用户管理', '/system/userAdmin', '', '', 0, 2, '2020-10-15 08:49:21', '2021-01-29 10:06:40');
 INSERT INTO `sys_menu` VALUES (4, 2, '角色管理', 1, '角色管理', '/system/roleAdmin', '', '', 0, 2, '2020-10-15 08:49:47', '2021-01-26 11:14:35');
-INSERT INTO `sys_menu` VALUES (5, 2, '部门管理', 1, '部门管理', '/system/departAdmin', '', '', 0, 3, '2020-10-15 08:54:21', '2021-01-26 11:14:36');
-INSERT INTO `sys_menu` VALUES (6, 2, '菜单管理', 1, '菜单管理', '/system/menuAdmin', '', '', 0, 4, '2020-10-15 08:54:44', '2021-01-26 11:14:38');
-INSERT INTO `sys_menu` VALUES (7, 2, '权限管理', 1, '权限管理', '/system/permissionAdmin', '', '', 0, 5, '2020-10-15 08:55:05', '2021-01-26 11:14:40');
-INSERT INTO `sys_menu` VALUES (8, 0, '示例', 0, '', '', '', '', 0, 2, '2021-01-15 08:33:00', '2021-01-26 11:14:19');
-INSERT INTO `sys_menu` VALUES (9, 8, '参数与返回值加密', 1, '', '/demo/encrypt', '', '', 0, 1, '2021-01-15 08:33:48', '2021-01-26 11:14:56');
-INSERT INTO `sys_menu` VALUES (10, 8, '文件上传', 1, '', '/demo/fileUpload', '', '', 0, 2, '2021-01-19 09:51:13', '2021-01-26 11:14:58');
+INSERT INTO `sys_menu` VALUES (5, 2, '部门管理', 1, '部门管理', '/system/departAdmin', '', '', 0, 2, '2020-10-15 08:54:21', '2021-01-29 10:06:44');
+INSERT INTO `sys_menu` VALUES (6, 2, '菜单管理', 1, '菜单管理', '/system/menuAdmin', '', '', 0, 2, '2020-10-15 08:54:44', '2021-01-29 10:06:49');
+INSERT INTO `sys_menu` VALUES (7, 2, '权限管理', 1, '权限管理', '/system/permissionAdmin', '', '', 0, 2, '2020-10-15 08:55:05', '2021-01-29 10:06:53');
+INSERT INTO `sys_menu` VALUES (8, 0, '示例', 0, '', '/simple', '', '', 0, 1, '2021-01-15 08:33:00', '2021-01-29 10:08:20');
 COMMIT;
 
 -- ----------------------------

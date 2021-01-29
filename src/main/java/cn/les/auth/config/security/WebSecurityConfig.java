@@ -65,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/api/v1/login","/api/v1/open/**", "/error/**", "/index.html").permitAll()
+                .antMatchers("/api/v1/login","/api/v1/open/**", "/error/**", "/index.html","/docs/**").permitAll()
                 .and()
                 // 由于使用的是JWT，我们这里不需要csrf
                 .csrf().disable()
