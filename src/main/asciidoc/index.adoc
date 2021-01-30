@@ -11,9 +11,14 @@
 === 1.1 登录
 operation::HelloControllerTest/login[]
 
-[[user-query]]
-=== 1.2 用户查询
+[[user-menu]]
+=== 1.2 用户菜单查询
 
-提供用户查询
+提供用户菜单查询
 
-operation::HelloControllerTest/getUserIndex[]
+operation::HelloControllerTest/getUserMenu[]
+
+[[user-addUser]]
+=== 1.3 添加用户
+
+operation::HelloControllerTest/addUser[]

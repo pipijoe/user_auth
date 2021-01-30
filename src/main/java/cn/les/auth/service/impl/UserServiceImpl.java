@@ -1,19 +1,24 @@
 package cn.les.auth.service.impl;
 
+import cn.les.auth.dto.UserDTO;
+import cn.les.auth.entity.ResultCode;
+import cn.les.auth.entity.ResultJson;
 import cn.les.auth.entity.UserDetail;
 import cn.les.auth.entity.auth.MenuDO;
+import cn.les.auth.entity.auth.UserDO;
 import cn.les.auth.entity.user.Menu;
-import cn.les.auth.entity.user.UserIndex;
+import cn.les.auth.entity.vo.UserMenuVO;
+import cn.les.auth.entity.vo.UserVO;
+import cn.les.auth.exception.CustomException;
 import cn.les.auth.repo.IMenuDao;
+import cn.les.auth.repo.IUserDao;
 import cn.les.auth.service.UserService;
 import cn.les.auth.utils.JwtUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -24,55 +29,29 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
     private final JwtUtils jwtUtils;
-    private final IMenuDao menuDao;
+    private final IUserDao userDao;
 
-    public UserServiceImpl(JwtUtils jwtUtils, IMenuDao menuDao) {
+    public UserServiceImpl(JwtUtils jwtUtils, IUserDao userDao) {
         this.jwtUtils = jwtUtils;
-        this.menuDao = menuDao;
+
+        this.userDao = userDao;
     }
 
     @Override
-    public UserIndex getUserIndex() {
-        UserDetail userDetail = jwtUtils.getUserDetailFromAuthContext();
-        Long userId = userDetail.getId();
-        List<Long> menuIds = menuDao.findAllMenuIdsByUserId(userId);
-        List<MenuDO> menuDOAll = menuDao.findAllByOrderBySort();
-        List<Menu> userMenu = buildUserMenu(menuIds, menuDOAll);
-        return UserIndex.builder()
-                .id(userId)
-                .menus(userMenu)
-                .name(userDetail.getUsername())
-                .nickname(userDetail.getNickname())
-                .build();
-    }
-
-    private List<Menu> buildUserMenu(List<Long> menuIds, List<MenuDO> menuDOAll) {
-        Map<Long, Menu> menuMap = menuDOAll.stream().map(menuDo -> {
-            Menu menu = new Menu();
-            BeanUtils.copyProperties(menuDo, menu);
-            return menu;
-        }).collect(Collectors.toMap(Menu::getId, menu -> menu));
-
-        List<Menu> userMenu = new ArrayList<>();
-        for (Long id: menuIds) {
-            if (menuMap.containsKey(id)) {
-                userMenu.add(menuMap.get(id));
-            }
+    public Long addUser(UserDTO userDTO) {
+        Optional<UserDO> userDOOptional = userDao.findByUsernameAndDeleteAtEquals(userDTO.getUsername(), 0L);
+        if (userDOOptional.isPresent()) {
+            throw new CustomException(ResultJson.failure(ResultCode.BAD_REQUEST, "该用户已存在"));
         }
-        return parseMenuTree(userMenu);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String pwdEncode = encoder.encode(userDTO.getPassword());
+        UserDO userDO = new UserDO();
+        BeanUtils.copyProperties(userDTO, userDO);
+        userDO.setPassword(pwdEncode);
+        userDO = userDao.save(userDO);
+        return userDO.getId();
     }
 
-    private List<Menu> parseMenuTree(List<Menu> userMenu) {
-        List<Menu> menuTree = new ArrayList<>();
-        Iterator<Menu> menuIterator = userMenu.iterator();
-        while (menuIterator.hasNext()) {
-            Menu menu = menuIterator.next();
-            if (menu.getParentId() == 0) {
-                menuTree.add(menu);
-                menuIterator.remove();
-            }
-        }
-        menuTree.forEach(parent -> parent.setChildren(userMenu));
-        return menuTree;
-    }
+
+
 }

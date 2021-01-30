@@ -1,6 +1,8 @@
 package cn.les.auth.service;
 
-import cn.les.auth.entity.user.UserIndex;
+import cn.les.auth.dto.UserDTO;
+import cn.les.auth.entity.vo.UserMenuVO;
+import cn.les.auth.entity.vo.UserVO;
 
 /**
  * @author Joetao
@@ -9,9 +11,10 @@ import cn.les.auth.entity.user.UserIndex;
  */
 public interface UserService {
     /**
-     * 获取登录用户的基本信息和菜单
+     * 添加用户
      *
-     * @return 用户登录信息
+     * @param userDTO 添加用户的信息
+     * @return 新用户信息
      */
-    UserIndex getUserIndex();
+    Long addUser(UserDTO userDTO);
 }

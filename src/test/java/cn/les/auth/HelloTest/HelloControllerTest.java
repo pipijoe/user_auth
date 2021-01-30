@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -98,8 +99,8 @@ public class HelloControllerTest {
 
 
     @Test
-    public void getUserIndex() throws Exception {
-        mockMvc.perform(get("/api/v1/users/me").header("Authorization", "Bearer " + token))
+    public void getUserMenu() throws Exception {
+        mockMvc.perform(get("/api/v1/menus").header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andDo(
                         document("{ClassName}/{methodName}",
@@ -124,6 +125,32 @@ public class HelloControllerTest {
                                         fieldWithPath("data.id").description("用户id"),
                                         fieldWithPath("data.name").description("用户账号"),
                                         fieldWithPath("data.nickname").description("用户昵称")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    public void addUser() throws Exception{
+        HashMap<Object, Object> reqBody = new HashMap<>();
+        reqBody.put("username", "test");
+        reqBody.put("nickname", "TEST");
+        reqBody.put("password", "12345678");
+        reqBody.put("roleIds", new ArrayList<Long>());
+
+        mockMvc.perform(post("/api/v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(reqBody)))
+                .andDo(
+                        document("{ClassName}/{methodName}",
+                                requestFields(fieldWithPath("username").description("登录名"),
+                                        fieldWithPath("password").description("密码"),
+                                        fieldWithPath("nickname").description("昵称"),
+                                        fieldWithPath("roleIds").description("角色id列表")
+                                ),
+                                responseFields(fieldWithPath("code").description("返回自定义码"),
+                                        fieldWithPath("msg").description("code描述信息"),
+                                        fieldWithPath("data").description("用户id")
                                 )
                         )
                 );

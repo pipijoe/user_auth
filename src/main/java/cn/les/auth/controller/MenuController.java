@@ -1,6 +1,8 @@
 package cn.les.auth.controller;
 
 import cn.les.auth.entity.ResultJson;
+import cn.les.auth.entity.vo.UserMenuVO;
+import cn.les.auth.service.MenuService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,8 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 @RestController
 public class MenuController {
+    private final MenuService menuService;
+
+    public MenuController(MenuService menuService) {
+        this.menuService = menuService;
+    }
+
     @GetMapping("/menus")
-    public ResultJson getMenus() {
-        return ResultJson.ok();
+    public ResultJson<UserMenuVO> getMenus() {
+        return ResultJson.ok(menuService.findUserMenu());
     }
 }

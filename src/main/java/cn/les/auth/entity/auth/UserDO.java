@@ -4,9 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author joetao
@@ -18,10 +16,13 @@ import javax.persistence.Table;
 @Data
 public class UserDO {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String nickname;
     private String password;
+    @Column(nullable=false)
     private Integer state;
+    @Column(nullable=false)
     private Long deleteAt;
 }

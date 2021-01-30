@@ -1,5 +1,6 @@
-package cn.les.auth.entity.user;
+package cn.les.auth.entity.vo;
 
+import cn.les.auth.entity.user.Menu;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 @Data
 @Builder
-public class UserIndex {
+public class UserMenuVO {
     private Long id;
     private String name;
     private String nickname;

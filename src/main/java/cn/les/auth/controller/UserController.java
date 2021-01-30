@@ -1,9 +1,13 @@
 package cn.les.auth.controller;
 
+import cn.les.auth.dto.UserDTO;
 import cn.les.auth.entity.ResultJson;
-import cn.les.auth.entity.user.UserIndex;
+import cn.les.auth.entity.vo.UserMenuVO;
+import cn.les.auth.entity.vo.UserVO;
 import cn.les.auth.service.UserService;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * 1. 查看所有用户列表（管理员、超管）
@@ -32,12 +36,6 @@ public class UserController {
         return ResultJson.ok();
     }
 
-    @GetMapping("/users/me")
-    public ResultJson getUsersProfile() {
-        UserIndex userIndex = userService.getUserIndex();
-        return ResultJson.ok(userIndex);
-    }
-
     @GetMapping("/users/{id}")
     public ResultJson getUsersProfileById(@PathVariable String id) {
         return ResultJson.ok();
@@ -54,7 +52,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResultJson addUsers() {
-        return ResultJson.ok();
+    public ResultJson addUsers(@Valid @RequestBody UserDTO userDTO) {
+        Long userId = userService.addUser(userDTO);
+        return ResultJson.ok(userId);
     }
 }
