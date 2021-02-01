@@ -43,7 +43,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         UserDO user = opt.get();
 
         Set<GrantedAuthority> grantedAuthorities = userRoleDao.findByUserId(user.getId()).stream()
-                .map(role -> new SimpleGrantedAuthority(roleDao.findById(role.getRoleId()).orElse(new RoleDO(0L, SecurityProps.ROLE_ANONYMOUS)).getRoleName()))
+                .map(role -> new SimpleGrantedAuthority(roleDao.findById(role.getRoleId()).orElse(new RoleDO(0L, SecurityProps.ROLE_ANONYMOUS, "匿名用户")).getRoleName()))
                 .collect(Collectors.toSet());
 
         return UserDetail.builder()

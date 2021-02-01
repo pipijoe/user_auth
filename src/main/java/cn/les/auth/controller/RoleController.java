@@ -1,7 +1,14 @@
 package cn.les.auth.controller;
 
+import cn.les.auth.dto.RoleDTO;
+import cn.les.auth.entity.ResultCode;
 import cn.les.auth.entity.ResultJson;
+import cn.les.auth.exception.CustomException;
+import cn.les.auth.service.RoleService;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.Locale;
 
 /**
  * @author Joetao
@@ -11,6 +18,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1")
 @RestController
 public class RoleController {
+    private final RoleService roleService;
+    private final String rolePrefix = "ROLE_";
+
+    public RoleController(RoleService roleService) {
+        this.roleService = roleService;
+    }
+
     @GetMapping("/roles")
     public ResultJson getRoles() {
         return ResultJson.ok();
@@ -27,7 +41,12 @@ public class RoleController {
     }
 
     @PostMapping("/roles")
-    public ResultJson addRole() {
-        return ResultJson.ok();
+    public ResultJson addRole(@Valid @RequestBody RoleDTO roleDTO) {
+        String roleName = roleDTO.getRoleName();
+        if (!roleName.toUpperCase(Locale.ROOT).startsWith(rolePrefix)) {
+            throw new CustomException(ResultJson.failure(ResultCode.BAD_REQUEST, "角色名称不正确，以ROLE_开头"));
+        }
+        Long roleId = roleService.addRole(roleDTO);
+        return ResultJson.ok(roleId);
     }
 }

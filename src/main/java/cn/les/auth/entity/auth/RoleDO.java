@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author joetao
@@ -22,6 +20,8 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class RoleDO {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String roleName;
+    private String roleNameZh;
 }

@@ -156,6 +156,30 @@ public class HelloControllerTest {
                 );
     }
 
+    @Test
+    public void addRole() throws Exception{
+        HashMap<Object, Object> reqBody = new HashMap<>();
+        reqBody.put("roleName", "ROLE_admin");
+        reqBody.put("roleNameZh", "管理员");
+        reqBody.put("menuIds", new ArrayList<Long>());
+
+        mockMvc.perform(post("/api/v1/roles")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(reqBody)))
+                .andDo(
+                        document("{ClassName}/{methodName}",
+                                requestFields(fieldWithPath("roleName").description("角色名"),
+                                        fieldWithPath("roleNameZh").description("角色中文名"),
+                                        fieldWithPath("menuIds").description("菜单id列表")
+                                ),
+                                responseFields(fieldWithPath("code").description("返回自定义码"),
+                                        fieldWithPath("msg").description("code描述信息"),
+                                        fieldWithPath("data").description("角色id")
+                                )
+                        )
+                );
+    }
+
     public void loginBefore() throws Exception{
         HashMap<Object, Object> reqBody = new HashMap<>();
         reqBody.put("username", "admin");
