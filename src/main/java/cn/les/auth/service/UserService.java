@@ -4,6 +4,8 @@ import cn.les.auth.dto.UserDTO;
 import cn.les.auth.entity.vo.UserMenuVO;
 import cn.les.auth.entity.vo.UserVO;
 
+import java.util.List;
+
 /**
  * @author Joetao
  * @time 2021/1/28 3:02 下午
@@ -17,4 +19,12 @@ public interface UserService {
      * @return 新用户信息
      */
     Long addUser(UserDTO userDTO);
+
+    /**
+     * 给用户设置角色
+     *
+     * @param userId 用户id
+     * @param roleIds 用户角色id列表
+     */
+    void addUserRoles(Long userId, List<Long> roleIds);
 }

@@ -27,3 +27,8 @@ operation::HelloControllerTest/addUser[]
 === 1.4 添加角色
 
 operation::HelloControllerTest/addRole[]
+
+[[user-addUserRole]]
+=== 1.5 设置用户角色
+
+operation::HelloControllerTest/addUserRole[]

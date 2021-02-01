@@ -8,6 +8,7 @@ import cn.les.auth.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 1. 查看所有用户列表（管理员、超管）
@@ -52,8 +53,14 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResultJson addUsers(@Valid @RequestBody UserDTO userDTO) {
+    public ResultJson<Long> addUsers(@Valid @RequestBody UserDTO userDTO) {
         Long userId = userService.addUser(userDTO);
         return ResultJson.ok(userId);
+    }
+
+    @PostMapping("/users/{id}/roles")
+    public ResultJson addUserRoles(@PathVariable Long id, @RequestBody List<Long> roleIds) {
+        userService.addUserRoles(id, roleIds);
+        return ResultJson.ok();
     }
 }

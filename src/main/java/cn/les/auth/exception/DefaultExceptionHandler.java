@@ -3,6 +3,7 @@ package cn.les.auth.exception;
 import cn.les.auth.entity.ResultCode;
 import cn.les.auth.entity.ResultJson;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -28,7 +29,7 @@ public class DefaultExceptionHandler {
      * @param e 自定义异常
      * @return 返回自定义异常的ResultJson
      */
-    @ExceptionHandler(cn.les.auth.exception.CustomException.class)
+    @ExceptionHandler(CustomException.class)
     public ResultJson<?> handleCustomException(HttpServletRequest req, CustomException e){
         String uri = req.getRequestURI();
         String params = getRequestData(req);
@@ -58,5 +59,13 @@ public class DefaultExceptionHandler {
             params.add(entry.getKey() + ":" + String.join(",", entry.getValue()));
         }
         return params.toString();
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResultJson<String> handleDataIntegrityViolationException(HttpServletRequest req, DataIntegrityViolationException e) {
+        String uri = req.getRequestURI();
+        String params = getRequestData(req);
+        log.error("==MySQLException== {} {} {}", uri, params, e.getCause().getCause().getMessage());
+        return ResultJson.failure(ResultCode.BAD_REQUEST, e.getCause().getCause().getMessage());
     }
 }

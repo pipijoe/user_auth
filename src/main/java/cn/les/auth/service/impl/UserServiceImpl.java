@@ -3,9 +3,11 @@ package cn.les.auth.service.impl;
 import cn.les.auth.dto.UserDTO;
 import cn.les.auth.entity.ResultCode;
 import cn.les.auth.entity.ResultJson;
+import cn.les.auth.entity.auth.RoleDO;
 import cn.les.auth.entity.auth.UserDO;
 import cn.les.auth.entity.auth.UserRoleDO;
 import cn.les.auth.exception.CustomException;
+import cn.les.auth.repo.IRoleDao;
 import cn.les.auth.repo.IUserDao;
 import cn.les.auth.repo.IUserRoleDao;
 import cn.les.auth.service.UserService;
@@ -28,12 +30,14 @@ public class UserServiceImpl implements UserService {
     private final JwtUtils jwtUtils;
     private final IUserDao userDao;
     private final IUserRoleDao userRoleDao;
+    private final IRoleDao roleDao;
 
-    public UserServiceImpl(JwtUtils jwtUtils, IUserDao userDao, IUserRoleDao userRoleDao) {
+    public UserServiceImpl(JwtUtils jwtUtils, IUserDao userDao, IUserRoleDao userRoleDao, IRoleDao roleDao) {
         this.jwtUtils = jwtUtils;
 
         this.userDao = userDao;
         this.userRoleDao = userRoleDao;
+        this.roleDao = roleDao;
     }
 
     @Override
@@ -59,6 +63,22 @@ public class UserServiceImpl implements UserService {
         return userDO.getId();
     }
 
+    @Override
+    public void addUserRoles(Long userId, List<Long> roleIds) {
+        Optional<UserDO> userDOOptional = userDao.findById(userId);
+        if (!userDOOptional.isPresent()) {
+            throw new CustomException(ResultJson.failure(ResultCode.BAD_REQUEST, "该用户已存在"));
+        }
+        List<RoleDO> roles = roleDao.findByIdIn(roleIds);
+        if (roleIds.size() == 0 || roles.size() < roleIds.size()) {
+            throw new CustomException(ResultJson.failure(ResultCode.BAD_REQUEST, "角色设置不符合要求"));
+        }
+        List<UserRoleDO> userDOList = new ArrayList<>();
+        for (Long roleId : roleIds) {
+            userDOList.add(UserRoleDO.builder().roleId(roleId).userId(userId).build());
+        }
+        userRoleDao.saveAll(userDOList);
+    }
 
 
 }

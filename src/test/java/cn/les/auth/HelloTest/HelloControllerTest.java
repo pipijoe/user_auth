@@ -24,6 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -33,6 +34,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -172,6 +174,27 @@ public class HelloControllerTest {
                                         fieldWithPath("roleNameZh").description("角色中文名"),
                                         fieldWithPath("menuIds").description("菜单id列表")
                                 ),
+                                responseFields(fieldWithPath("code").description("返回自定义码"),
+                                        fieldWithPath("msg").description("code描述信息"),
+                                        fieldWithPath("data").description("角色id")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    public void addUserRole() throws Exception{
+        List<Long> roleIds = new ArrayList<>();
+        roleIds.add(2L);
+
+        mockMvc.perform(post("/api/v1/users/{id}/roles", 5L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(roleIds)))
+                .andDo(
+                        document("{ClassName}/{methodName}",
+                                pathParameters(parameterWithName("id").description("用户id")),
+                                requestFields(
+                                        fieldWithPath("[]").description("角色id列表")),
                                 responseFields(fieldWithPath("code").description("返回自定义码"),
                                         fieldWithPath("msg").description("code描述信息"),
                                         fieldWithPath("data").description("角色id")

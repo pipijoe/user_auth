@@ -3,6 +3,7 @@ package cn.les.auth.repo;
 import cn.les.auth.entity.auth.RoleDO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -16,4 +17,12 @@ public interface IRoleDao extends JpaRepository<RoleDO, Long> {
      * @return 角色
      */
     Optional<RoleDO> findByRoleName(String roleName);
+
+    /**
+     * 根据roleIds查询roles
+     *
+     * @param roleIds 角色id
+     * @return 角色列表
+     */
+    List<RoleDO> findByIdIn(List<Long> roleIds);
 }
