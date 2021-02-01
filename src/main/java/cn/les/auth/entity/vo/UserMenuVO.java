@@ -1,6 +1,5 @@
 package cn.les.auth.entity.vo;
 
-import cn.les.auth.entity.user.Menu;
 import lombok.Builder;
 import lombok.Data;
 

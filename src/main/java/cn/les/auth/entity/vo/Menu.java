@@ -1,4 +1,4 @@
-package cn.les.auth.entity.user;
+package cn.les.auth.entity.vo;
 
 import lombok.Data;
 

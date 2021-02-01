@@ -3,9 +3,11 @@ package cn.les.auth.service.impl;
 import cn.les.auth.dto.RoleDTO;
 import cn.les.auth.entity.ResultCode;
 import cn.les.auth.entity.ResultJson;
+import cn.les.auth.entity.auth.MenuDO;
 import cn.les.auth.entity.auth.RoleDO;
 import cn.les.auth.entity.auth.RoleMenuDO;
 import cn.les.auth.exception.CustomException;
+import cn.les.auth.repo.IMenuDao;
 import cn.les.auth.repo.IRoleDao;
 import cn.les.auth.repo.IRoleMenuDao;
 import cn.les.auth.service.RoleService;
@@ -25,10 +27,12 @@ import java.util.Optional;
 public class RoleServiceImpl implements RoleService {
     private final IRoleDao roleDao;
     private final IRoleMenuDao roleMenuDao;
+    private final IMenuDao menuDao;
 
-    public RoleServiceImpl(IRoleDao roleDao, IRoleMenuDao roleMenuDao) {
+    public RoleServiceImpl(IRoleDao roleDao, IRoleMenuDao roleMenuDao, IMenuDao menuDao) {
         this.roleDao = roleDao;
         this.roleMenuDao = roleMenuDao;
+        this.menuDao = menuDao;
     }
 
     @Override
@@ -37,11 +41,19 @@ public class RoleServiceImpl implements RoleService {
         if (roleDOOptional.isPresent()) {
             throw new CustomException(ResultJson.failure(ResultCode.BAD_REQUEST, "该角色已存在"));
         }
+        List<Long> menuIds = roleDTO.getMenuIds();
+
+        boolean hasMenuIds = null != menuIds && !menuIds.isEmpty();
+        if (hasMenuIds) {
+            List<MenuDO> menuDOList = menuDao.findByIdIn(menuIds);
+            if (menuDOList.size() < menuIds.size()) {
+                throw new CustomException(ResultJson.failure(ResultCode.BAD_REQUEST, "菜单设置不符合要求"));
+            }
+        }
         RoleDO roleDO = new RoleDO();
         BeanUtils.copyProperties(roleDTO, roleDO);
         roleDO = roleDao.save(roleDO);
-        List<Long> menuIds = roleDTO.getMenuIds();
-        if (!menuIds.isEmpty()) {
+        if (hasMenuIds) {
             List<RoleMenuDO> roleMenuDOS = new ArrayList<>();
             for (Long id : menuIds) {
                 roleMenuDOS.add(RoleMenuDO.builder().roleId(roleDO.getId()).menuId(id).build());

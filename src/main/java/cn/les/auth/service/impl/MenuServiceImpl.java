@@ -1,10 +1,19 @@
 package cn.les.auth.service.impl;
 
+import cn.les.auth.dto.MenuDTO;
+import cn.les.auth.entity.ResultCode;
+import cn.les.auth.entity.ResultJson;
 import cn.les.auth.entity.UserDetail;
 import cn.les.auth.entity.auth.MenuDO;
-import cn.les.auth.entity.user.Menu;
+import cn.les.auth.entity.auth.MenuPermissionDO;
+import cn.les.auth.entity.auth.PermissionDO;
+import cn.les.auth.entity.auth.RoleDO;
+import cn.les.auth.entity.vo.Menu;
 import cn.les.auth.entity.vo.UserMenuVO;
+import cn.les.auth.exception.CustomException;
 import cn.les.auth.repo.IMenuDao;
+import cn.les.auth.repo.IMenuPermissionDao;
+import cn.les.auth.repo.IPermissionDao;
 import cn.les.auth.service.MenuService;
 import cn.les.auth.utils.JwtUtils;
 import org.springframework.beans.BeanUtils;
@@ -25,10 +34,14 @@ import java.util.stream.Collectors;
 public class MenuServiceImpl implements MenuService {
     private final JwtUtils jwtUtils;
     private final IMenuDao menuDao;
+    private final IMenuPermissionDao menuPermissionDao;
+    private final IPermissionDao permissionDao;
 
-    public MenuServiceImpl(JwtUtils jwtUtils, IMenuDao menuDao) {
+    public MenuServiceImpl(JwtUtils jwtUtils, IMenuDao menuDao, IMenuPermissionDao menuPermissionDao, IPermissionDao permissionDao) {
         this.jwtUtils = jwtUtils;
         this.menuDao = menuDao;
+        this.menuPermissionDao = menuPermissionDao;
+        this.permissionDao = permissionDao;
     }
 
     @Override
@@ -46,6 +59,30 @@ public class MenuServiceImpl implements MenuService {
                 .build();
     }
 
+    @Override
+    public Long addMenu(MenuDTO menuDTO) {
+        List<Long> permissionIds = menuDTO.getPermissionId();
+        if (permissionIds != null && !permissionIds.isEmpty()) {
+            List<PermissionDO> permissionDOList = permissionDao.findByIdIn(permissionIds);
+            if (permissionDOList.size() < permissionIds.size()) {
+                throw new CustomException(ResultJson.failure(ResultCode.BAD_REQUEST, "权限设置不符合要求"));
+            }
+        }
+        MenuDO menuDO = new MenuDO();
+        BeanUtils.copyProperties(menuDTO, menuDO);
+        menuDO = menuDao.save(menuDO);
+        if (!permissionIds.isEmpty()) {
+            List<MenuPermissionDO> menuPermissionDOList = new ArrayList<>();
+            for (Long permissionId : permissionIds) {
+                MenuPermissionDO menuPermissionDO = new MenuPermissionDO();
+                menuPermissionDO.setMenuId(menuDO.getId());
+                menuPermissionDO.setPermissionId(permissionId);
+            }
+            menuPermissionDao.saveAll(menuPermissionDOList);
+        }
+        return menuDO.getId();
+    }
+
     private List<Menu> buildUserMenu(List<Long> menuIds, List<MenuDO> menuDOAll) {
         Map<Long, Menu> menuMap = menuDOAll.stream().map(menuDo -> {
             Menu menu = new Menu();
@@ -54,7 +91,7 @@ public class MenuServiceImpl implements MenuService {
         }).collect(Collectors.toMap(Menu::getId, menu -> menu));
 
         List<Menu> userMenu = new ArrayList<>();
-        for (Long id: menuIds) {
+        for (Long id : menuIds) {
             if (menuMap.containsKey(id)) {
                 userMenu.add(menuMap.get(id));
             }

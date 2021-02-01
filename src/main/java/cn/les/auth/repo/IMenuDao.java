@@ -29,4 +29,12 @@ public interface IMenuDao extends JpaRepository<MenuDO, Long> {
             "where menu.id = roleMenu.menuId and roleMenu.roleId = userRole.roleId " +
             "and userRole.userId = ?1")
     List<Long> findAllMenuIdsByUserId(Long userId);
+
+    /**
+     * 根据菜单id查询菜单列表
+     *
+     * @param menuIds 菜单id列表
+     * @return 菜单列表
+     */
+    List<MenuDO> findByIdIn(List<Long> menuIds);
 }
