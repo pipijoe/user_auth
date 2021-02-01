@@ -1,14 +1,13 @@
 package cn.les.auth.service.impl;
 
-import cn.les.auth.dto.MenuDTO;
+import cn.les.auth.entity.dto.MenuDTO;
 import cn.les.auth.entity.ResultCode;
 import cn.les.auth.entity.ResultJson;
 import cn.les.auth.entity.UserDetail;
-import cn.les.auth.entity.auth.MenuDO;
-import cn.les.auth.entity.auth.MenuPermissionDO;
-import cn.les.auth.entity.auth.PermissionDO;
-import cn.les.auth.entity.auth.RoleDO;
-import cn.les.auth.entity.vo.Menu;
+import cn.les.auth.repo.MenuDO;
+import cn.les.auth.repo.MenuPermissionDO;
+import cn.les.auth.repo.PermissionDO;
+import cn.les.auth.entity.Menu;
 import cn.les.auth.entity.vo.UserMenuVO;
 import cn.les.auth.exception.CustomException;
 import cn.les.auth.repo.IMenuDao;

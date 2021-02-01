@@ -1,6 +1,6 @@
 package cn.les.auth.controller;
 
-import cn.les.auth.dto.LoginUserDTO;
+import cn.les.auth.entity.dto.LoginUserDTO;
 import cn.les.auth.entity.ResultJson;
 import cn.les.auth.entity.vo.UserVO;
 import cn.les.auth.service.LoginService;

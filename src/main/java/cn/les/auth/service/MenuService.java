@@ -1,6 +1,6 @@
 package cn.les.auth.service;
 
-import cn.les.auth.dto.MenuDTO;
+import cn.les.auth.entity.dto.MenuDTO;
 import cn.les.auth.entity.vo.UserMenuVO;
 
 /**

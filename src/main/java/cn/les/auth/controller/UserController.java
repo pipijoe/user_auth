@@ -1,9 +1,7 @@
 package cn.les.auth.controller;
 
-import cn.les.auth.dto.UserDTO;
+import cn.les.auth.entity.dto.UserDTO;
 import cn.les.auth.entity.ResultJson;
-import cn.les.auth.entity.vo.UserMenuVO;
-import cn.les.auth.entity.vo.UserVO;
 import cn.les.auth.service.UserService;
 import org.springframework.web.bind.annotation.*;
 

@@ -2,8 +2,8 @@ package cn.les.auth.service;
 
 import cn.les.auth.config.security.SecurityProps;
 import cn.les.auth.entity.UserDetail;
-import cn.les.auth.entity.auth.RoleDO;
-import cn.les.auth.entity.auth.UserDO;
+import cn.les.auth.repo.RoleDO;
+import cn.les.auth.repo.UserDO;
 import cn.les.auth.repo.IRoleDao;
 import cn.les.auth.repo.IUserDao;
 import cn.les.auth.repo.IUserRoleDao;

@@ -1,6 +1,6 @@
 package cn.les.auth.controller;
 
-import cn.les.auth.dto.MenuDTO;
+import cn.les.auth.entity.dto.MenuDTO;
 import cn.les.auth.entity.ResultJson;
 import cn.les.auth.entity.vo.UserMenuVO;
 import cn.les.auth.service.MenuService;

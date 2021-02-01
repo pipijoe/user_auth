@@ -1,6 +1,6 @@
 package cn.les.auth.controller;
 
-import cn.les.auth.dto.RoleDTO;
+import cn.les.auth.entity.dto.RoleDTO;
 import cn.les.auth.entity.ResultCode;
 import cn.les.auth.entity.ResultJson;
 import cn.les.auth.exception.CustomException;

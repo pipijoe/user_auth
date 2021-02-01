@@ -1,8 +1,6 @@
 package cn.les.auth.service;
 
-import cn.les.auth.dto.UserDTO;
-import cn.les.auth.entity.vo.UserMenuVO;
-import cn.les.auth.entity.vo.UserVO;
+import cn.les.auth.entity.dto.UserDTO;
 
 import java.util.List;
 

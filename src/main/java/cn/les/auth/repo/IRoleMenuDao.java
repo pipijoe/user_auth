@@ -1,6 +1,5 @@
 package cn.les.auth.repo;
 
-import cn.les.auth.entity.auth.RoleMenuDO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

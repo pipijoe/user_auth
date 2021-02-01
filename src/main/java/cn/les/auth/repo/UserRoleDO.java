@@ -1,10 +1,9 @@
-package cn.les.auth.entity.auth;
+package cn.les.auth.repo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -12,16 +11,15 @@ import javax.persistence.*;
  * @author joetao
  */
 @Entity
-@Table(name="sys_role")
-@DynamicInsert
-@DynamicUpdate
+@Table(name="sys_user_role")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleDO {
+public class UserRoleDO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String roleName;
-    private String roleNameZh;
+    private Long userId;
+    private Long roleId;
 }

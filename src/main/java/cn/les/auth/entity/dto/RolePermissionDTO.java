@@ -1,4 +1,4 @@
-package cn.les.auth.dto;
+package cn.les.auth.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

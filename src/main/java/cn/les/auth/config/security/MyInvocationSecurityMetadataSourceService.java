@@ -1,8 +1,8 @@
 package cn.les.auth.config.security;
 
-import cn.les.auth.dto.RolePermissionDTO;
-import cn.les.auth.entity.auth.PermissionDO;
-import cn.les.auth.entity.auth.RoleDO;
+import cn.les.auth.entity.dto.RolePermissionDTO;
+import cn.les.auth.repo.PermissionDO;
+import cn.les.auth.repo.RoleDO;
 import cn.les.auth.repo.IPermissionDao;
 import cn.les.auth.repo.IRoleDao;
 import org.springframework.security.access.ConfigAttribute;

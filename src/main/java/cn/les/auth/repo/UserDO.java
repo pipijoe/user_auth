@@ -1,4 +1,4 @@
-package cn.les.auth.entity.auth;
+package cn.les.auth.repo;
 
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
@@ -10,22 +10,19 @@ import javax.persistence.*;
  * @author joetao
  */
 @Entity
-@Table(name="sys_menu")
+@Table(name="sys_user")
 @DynamicInsert
 @DynamicUpdate
 @Data
-public class MenuDO {
+public class UserDO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String username;
+    private String nickname;
+    private String password;
     @Column(nullable=false)
-    private Long parentId;
+    private Integer state;
     @Column(nullable=false)
-    private Integer type;
-    private String menuName;
-    private String description;
-    private String path;
-    private String menuIcon;
-    @Column(nullable=false)
-    private Integer sort;
+    private Long deleteAt;
 }

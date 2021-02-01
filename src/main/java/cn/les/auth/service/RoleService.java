@@ -1,6 +1,6 @@
 package cn.les.auth.service;
 
-import cn.les.auth.dto.RoleDTO;
+import cn.les.auth.entity.dto.RoleDTO;
 
 /**
  * @author Joetao

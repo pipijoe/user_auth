@@ -1,4 +1,4 @@
-package cn.les.auth.entity.auth;
+package cn.les.auth.repo;
 
 import lombok.Builder;
 import lombok.Data;

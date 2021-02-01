@@ -1,6 +1,5 @@
 package cn.les.auth.repo;
 
-import cn.les.auth.entity.auth.RoleDO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

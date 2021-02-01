@@ -5,7 +5,6 @@ import cn.les.auth.entity.ResultJson;
 import cn.les.auth.entity.vo.UserVO;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
