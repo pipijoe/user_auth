@@ -19,6 +19,7 @@ import java.util.List;
 public class UserVO {
     private Long id;
     private String username;
+    private String nickname;
     private String token;
     private String refreshToken;
 }

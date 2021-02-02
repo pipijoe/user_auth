@@ -1,8 +1,10 @@
 package cn.les.auth.service.impl;
 
+import cn.les.auth.entity.UserDetail;
 import cn.les.auth.entity.dto.UserDTO;
 import cn.les.auth.entity.ResultCode;
 import cn.les.auth.entity.ResultJson;
+import cn.les.auth.entity.vo.UserVO;
 import cn.les.auth.repo.RoleDO;
 import cn.les.auth.repo.UserDO;
 import cn.les.auth.repo.UserRoleDO;
@@ -11,6 +13,7 @@ import cn.les.auth.repo.IRoleDao;
 import cn.les.auth.repo.IUserDao;
 import cn.les.auth.repo.IUserRoleDao;
 import cn.les.auth.service.UserService;
+import cn.les.auth.utils.JwtUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,11 +29,13 @@ import java.util.Optional;
  */
 @Service
 public class UserServiceImpl implements UserService {
+    private final JwtUtils jwtUtils;
     private final IUserDao userDao;
     private final IUserRoleDao userRoleDao;
     private final IRoleDao roleDao;
 
-    public UserServiceImpl(IUserDao userDao, IUserRoleDao userRoleDao, IRoleDao roleDao) {
+    public UserServiceImpl(JwtUtils jwtUtils, IUserDao userDao, IUserRoleDao userRoleDao, IRoleDao roleDao) {
+        this.jwtUtils = jwtUtils;
         this.userDao = userDao;
         this.userRoleDao = userRoleDao;
         this.roleDao = roleDao;
@@ -81,6 +86,19 @@ public class UserServiceImpl implements UserService {
             userDOList.add(UserRoleDO.builder().roleId(roleId).userId(userId).build());
         }
         userRoleDao.saveAll(userDOList);
+    }
+
+    @Override
+    public UserVO getMe() {
+        UserDetail userDetail = jwtUtils.getUserDetailFromAuthContext();
+        return UserVO
+                .builder()
+                .nickname(userDetail.getNickname())
+                .id(userDetail.getId())
+                .username(userDetail.getUsername())
+                .token("")
+                .refreshToken("")
+                .build();
     }
 
 

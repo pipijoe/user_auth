@@ -28,6 +28,11 @@ operation::HelloControllerTest/addUser[]
 
 operation::HelloControllerTest/addUserRole[]
 
+[[user-getMe]]
+=== 1.5 查询当前登录用户信息
+
+operation::HelloControllerTest/getMe[]
+
 [[role]]
 == 2. 角色模块
 

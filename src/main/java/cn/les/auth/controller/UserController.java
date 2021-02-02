@@ -2,6 +2,7 @@ package cn.les.auth.controller;
 
 import cn.les.auth.entity.dto.UserDTO;
 import cn.les.auth.entity.ResultJson;
+import cn.les.auth.entity.vo.UserVO;
 import cn.les.auth.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,11 @@ public class UserController {
     @GetMapping("/users")
     public ResultJson getUsers() {
         return ResultJson.ok();
+    }
+
+    @GetMapping("/users/me")
+    public ResultJson getMe() {
+        return ResultJson.ok(userService.getMe());
     }
 
     @GetMapping("/users/{id}")

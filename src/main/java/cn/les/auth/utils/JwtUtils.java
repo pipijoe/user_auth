@@ -164,11 +164,11 @@ public class JwtUtils {
 
     private String generateToken(UserDetail userDetail, long expiration) {
         Map<String, Object> claims = generateClaims(userDetail);
-        String subject = userDetail.getUsername();
+        String username = userDetail.getUsername();
         String userId = String.valueOf(userDetail.getId());
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(subject)
+                .setSubject(username)
                 .setId(userId)
                 .setIssuedAt(new Date())
                 .setExpiration(generateExpirationDate(expiration))

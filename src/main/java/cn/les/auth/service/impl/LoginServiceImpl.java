@@ -44,6 +44,7 @@ public class LoginServiceImpl implements LoginService {
         return UserVO.builder()
                 .id(userDetail.getId())
                 .username(userDetail.getUsername())
+                .nickname(userDetail.getNickname())
                 .token(token)
                 .refreshToken(refreshToken)
                 .build();

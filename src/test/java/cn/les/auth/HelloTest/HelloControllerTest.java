@@ -88,6 +88,7 @@ public class HelloControllerTest {
                                         fieldWithPath("data").description("请求具体返回内容"),
                                         fieldWithPath("data.id").description("用户id"),
                                         fieldWithPath("data.username").description("用户名"),
+                                        fieldWithPath("data.nickname").description("用户昵称"),
                                         fieldWithPath("data.token").description("请求头需要携带的token"),
                                         fieldWithPath("data.refreshToken").description("用来刷新token")
                                 )
@@ -132,6 +133,26 @@ public class HelloControllerTest {
     }
 
     @Test
+    public void getMe() throws Exception {
+        mockMvc.perform(get("/api/v1/users/me").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andDo(
+                        document("{ClassName}/{methodName}",
+                                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                                requestHeaders(headerWithName("Authorization").description("token")),
+                                responseFields(fieldWithPath("code").description("返回自定义码"),
+                                        fieldWithPath("msg").description("code描述信息"),
+                                        fieldWithPath("data").description("请求具体返回内容"),
+                                        fieldWithPath("data.id").description("用户id"),
+                                        fieldWithPath("data.username").description("账号"),
+                                        fieldWithPath("data.nickname").description("昵称"),
+                                        fieldWithPath("data.token").description("token"),
+                                        fieldWithPath("data.refreshToken").description("用来刷新token")
+                                )
+                        )
+                );
+    }
+    @Test
     public void addUser() throws Exception{
         HashMap<Object, Object> reqBody = new HashMap<>();
         reqBody.put("username", "test");
@@ -144,6 +165,7 @@ public class HelloControllerTest {
                 .content(objectMapper.writeValueAsString(reqBody)))
                 .andDo(
                         document("{ClassName}/{methodName}",
+                                requestHeaders(headerWithName("Authorization").description("token")),
                                 requestFields(fieldWithPath("username").description("登录名"),
                                         fieldWithPath("password").description("密码"),
                                         fieldWithPath("nickname").description("昵称"),
@@ -169,6 +191,7 @@ public class HelloControllerTest {
                 .content(objectMapper.writeValueAsString(reqBody)))
                 .andDo(
                         document("{ClassName}/{methodName}",
+                                requestHeaders(headerWithName("Authorization").description("token")),
                                 requestFields(fieldWithPath("roleName").description("角色名"),
                                         fieldWithPath("roleNameZh").description("角色中文名"),
                                         fieldWithPath("menuIds").description("菜单id列表")
@@ -191,6 +214,7 @@ public class HelloControllerTest {
                 .content(objectMapper.writeValueAsString(roleIds)))
                 .andDo(
                         document("{ClassName}/{methodName}",
+                                requestHeaders(headerWithName("Authorization").description("token")),
                                 pathParameters(parameterWithName("id").description("用户id")),
                                 requestFields(
                                         fieldWithPath("[]").description("角色id列表")),
@@ -219,6 +243,7 @@ public class HelloControllerTest {
                 .content(objectMapper.writeValueAsString(reqBody)))
                 .andDo(
                         document("{ClassName}/{methodName}",
+                                requestHeaders(headerWithName("Authorization").description("token")),
                                 requestFields(fieldWithPath("parentId").description("父菜单id"),
                                         fieldWithPath("menuName").description("菜单名称"),
                                         fieldWithPath("type").description("菜单类型，0：菜单组，1：功能菜单"),
@@ -248,6 +273,7 @@ public class HelloControllerTest {
                 .content(objectMapper.writeValueAsString(reqBody)))
                 .andDo(
                         document("{ClassName}/{methodName}",
+                                requestHeaders(headerWithName("Authorization").description("token")),
                                 requestFields(fieldWithPath("name").description("接口名称"),
                                         fieldWithPath("path").description("接口路径"),
                                         fieldWithPath("method").description("请求方法")

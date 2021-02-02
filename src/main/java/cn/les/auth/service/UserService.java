@@ -1,6 +1,7 @@
 package cn.les.auth.service;
 
 import cn.les.auth.entity.dto.UserDTO;
+import cn.les.auth.entity.vo.UserVO;
 
 import java.util.List;
 
@@ -25,4 +26,11 @@ public interface UserService {
      * @param roleIds 用户角色id列表
      */
     void addUserRoles(Long userId, List<Long> roleIds);
+
+    /**
+     * 查询当前登录用户信息
+     *
+     * @return 当前用户信息
+     */
+    UserVO getMe();
 }
