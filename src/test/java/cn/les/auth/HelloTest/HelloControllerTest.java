@@ -236,6 +236,29 @@ public class HelloControllerTest {
                 );
     }
 
+    @Test
+    public void addPermission() throws Exception {
+        HashMap<Object, Object> reqBody = new HashMap<>();
+        reqBody.put("name", "添加权限");
+        reqBody.put("path", "/api/v1/permissions");
+        reqBody.put("method", "POST");
+
+        mockMvc.perform(post("/api/v1/permissions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(reqBody)))
+                .andDo(
+                        document("{ClassName}/{methodName}",
+                                requestFields(fieldWithPath("name").description("接口名称"),
+                                        fieldWithPath("path").description("接口路径"),
+                                        fieldWithPath("method").description("请求方法")
+                                ),
+                                responseFields(fieldWithPath("code").description("返回自定义码"),
+                                        fieldWithPath("msg").description("code描述信息"),
+                                        fieldWithPath("data").description("菜单id")
+                                )
+                        )
+                );
+    }
     public void loginBefore() throws Exception{
         HashMap<Object, Object> reqBody = new HashMap<>();
         reqBody.put("username", "admin");

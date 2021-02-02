@@ -12,7 +12,6 @@ import java.util.List;
  */
 @Data
 public class UserDTO {
-    private Long id;
     @NotNull(message = "username不能为空")
     @Email(message = "账号必须是邮件地址")
     private String username;

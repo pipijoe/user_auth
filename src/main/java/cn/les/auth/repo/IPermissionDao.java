@@ -20,7 +20,7 @@ public interface IPermissionDao extends JpaRepository<PermissionDO, Long> {
             "UserRoleDO userRole, RoleMenuDO roleMenu, MenuPermissionDO menuPer " +
             "where userRole.roleId = roleMenu.roleId " +
             "and roleMenu.menuId = menuPer.menuId " +
-            "and menuPer.menuId = per.id and per.type = 0 and userRole.userId = ?1 ")
+            "and menuPer.menuId = per.id and userRole.userId = ?1 ")
     List<PermissionDO> findAllByUserIdWithoutGroup(Long userId);
 
     /**

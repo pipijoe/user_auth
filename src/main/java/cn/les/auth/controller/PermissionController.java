@@ -1,9 +1,9 @@
 package cn.les.auth.controller;
 
 import cn.les.auth.entity.ResultJson;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import cn.les.auth.entity.dto.PermissionDTO;
+import cn.les.auth.service.PermissionService;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Joetao
@@ -13,8 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 @RestController
 public class PermissionController {
+    private final PermissionService permissionService;
+
+    public PermissionController(PermissionService permissionService) {
+        this.permissionService = permissionService;
+    }
+
     @GetMapping("/permissions")
     public ResultJson getPermissions() {
         return ResultJson.ok();
+    }
+
+    @PostMapping("/permissions")
+    public ResultJson<Long> addPermissions(@RequestBody PermissionDTO permissionDTO) {
+        Long permissionId = permissionService.addPermission(permissionDTO);
+        return ResultJson.ok(permissionId);
     }
 }

@@ -13,7 +13,6 @@ import java.util.List;
  */
 @Data
 public class RoleDTO {
-    private Long id;
     @NotNull(message = "name不能为空")
     @Size(min = 6, max = 16, message = "name长度在6-16之间")
     private String roleName;

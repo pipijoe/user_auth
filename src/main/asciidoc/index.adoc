@@ -1,11 +1,11 @@
-= 用户管理
+= 系统管理API
 :toc: left
-:toc-title: 用户管理模块
+:toc-title: 系统管理模块
 
 提供用户、角色、菜单和权限的管理api
 
 [[user-it]]
-== 1. 用户接口
+== 1. 用户模块
 
 [[user-login]]
 === 1.1 登录
@@ -23,17 +23,30 @@ operation::HelloControllerTest/getUserMenu[]
 
 operation::HelloControllerTest/addUser[]
 
-[[user-addRole]]
-=== 1.4 添加角色
-
-operation::HelloControllerTest/addRole[]
-
 [[user-addUserRole]]
-=== 1.5 设置用户角色
+=== 1.4 设置用户角色
 
 operation::HelloControllerTest/addUserRole[]
 
-[[user-addMenu]]
-=== 1.6 添加菜单
+[[role]]
+== 2. 角色模块
+
+[[role-addRole]]
+=== 2.1 添加角色
+
+operation::HelloControllerTest/addRole[]
+
+[[menu]]
+== 3. 菜单模块
+
+[[menu-addMenu]]
+=== 3.1 添加菜单
 
 operation::HelloControllerTest/addMenu[]
+
+[[permission]]
+== 4. 权限模块
+
+[[permission-addpermission]]
+=== 4.1 添加权限
+operation::HelloControllerTest/addPermission[]
