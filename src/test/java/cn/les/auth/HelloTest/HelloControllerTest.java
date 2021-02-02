@@ -202,6 +202,40 @@ public class HelloControllerTest {
                 );
     }
 
+    @Test
+    public void addMenu() throws Exception {
+        HashMap<Object, Object> reqBody = new HashMap<>();
+        reqBody.put("parentId", 0);
+        reqBody.put("menuName", "任务管理");
+        reqBody.put("type", 0);
+        reqBody.put("description", "");
+        reqBody.put("path", "/tasks");
+        reqBody.put("menuIcon", "");
+        reqBody.put("sort", 1);
+        reqBody.put("permissionId", new ArrayList<Long>());
+
+        mockMvc.perform(post("/api/v1/menus")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(reqBody)))
+                .andDo(
+                        document("{ClassName}/{methodName}",
+                                requestFields(fieldWithPath("parentId").description("父菜单id"),
+                                        fieldWithPath("menuName").description("菜单名称"),
+                                        fieldWithPath("type").description("菜单类型，0：菜单组，1：功能菜单"),
+                                        fieldWithPath("description").description("菜单描述"),
+                                        fieldWithPath("path").description("菜单路径"),
+                                        fieldWithPath("menuIcon").description("菜单Icon"),
+                                        fieldWithPath("sort").description("菜单层级，1最高"),
+                                        fieldWithPath("permissionId").description("权限id列表")
+                                ),
+                                responseFields(fieldWithPath("code").description("返回自定义码"),
+                                        fieldWithPath("msg").description("code描述信息"),
+                                        fieldWithPath("data").description("菜单id")
+                                )
+                        )
+                );
+    }
+
     public void loginBefore() throws Exception{
         HashMap<Object, Object> reqBody = new HashMap<>();
         reqBody.put("username", "admin");

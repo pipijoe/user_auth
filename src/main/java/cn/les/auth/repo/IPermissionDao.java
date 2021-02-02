@@ -28,7 +28,7 @@ public interface IPermissionDao extends JpaRepository<PermissionDO, Long> {
      *
      * @return 角色权限列表
      */
-    @Query(value="select new cn.les.auth.dto.RolePermissionDTO(roleMenu.roleId, menuPer.permissionId) " +
+    @Query(value="select new cn.les.auth.entity.dto.RolePermissionDTO(roleMenu.roleId, menuPer.permissionId) " +
             "from RoleMenuDO roleMenu, MenuPermissionDO menuPer " +
             "where roleMenu.menuId = menuPer.menuId")
     List<RolePermissionDTO> findAllRolePermissions();

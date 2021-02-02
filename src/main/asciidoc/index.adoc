@@ -32,3 +32,8 @@ operation::HelloControllerTest/addRole[]
 === 1.5 设置用户角色
 
 operation::HelloControllerTest/addUserRole[]
+
+[[user-addMenu]]
+=== 1.6 添加菜单
+
+operation::HelloControllerTest/addMenu[]

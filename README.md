@@ -1,5 +1,6 @@
 # user_auth
-spring security, jwt, spring boot 动态菜单权限校验
+spring security, jwt, spring boot 动态菜单权限校验。
+包括用户管理、角色管理、菜单管理和权限管理。
 
 ### 2021-1-28： 
 
