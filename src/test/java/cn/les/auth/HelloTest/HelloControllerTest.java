@@ -98,7 +98,22 @@ public class HelloControllerTest {
         token = resultJson.getData().getToken();
     }
 
-
+    @Test
+    public void logout() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(post("/api/v1/logout").header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(
+                        document("{ClassName}/{methodName}",
+                                requestHeaders(headerWithName("Authorization").description("token")),
+                                responseFields(fieldWithPath("code").description("返回自定义码"),
+                                        fieldWithPath("msg").description("code描述信息"),
+                                        fieldWithPath("data").description("执行完成情况")
+                                )
+                        )
+                ).andReturn();
+        ResultJson<UserVO> resultJson = JSON.parseObject(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), new TypeReference<ResultJson<UserVO>>(){});
+        token = resultJson.getData().getToken();
+    }
 
     @Test
     public void getUserMenu() throws Exception {
@@ -160,7 +175,7 @@ public class HelloControllerTest {
         reqBody.put("password", "12345678");
         reqBody.put("roleIds", new ArrayList<Long>());
 
-        mockMvc.perform(post("/api/v1/users")
+        mockMvc.perform(post("/api/v1/users").header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(reqBody)))
                 .andDo(
@@ -186,7 +201,7 @@ public class HelloControllerTest {
         reqBody.put("roleNameZh", "管理员");
         reqBody.put("menuIds", new ArrayList<Long>());
 
-        mockMvc.perform(post("/api/v1/roles")
+        mockMvc.perform(post("/api/v1/roles").header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(reqBody)))
                 .andDo(
@@ -209,7 +224,7 @@ public class HelloControllerTest {
         List<Long> roleIds = new ArrayList<>();
         roleIds.add(2L);
 
-        mockMvc.perform(post("/api/v1/users/{id}/roles", 5L)
+        mockMvc.perform(post("/api/v1/users/{id}/roles", 5L).header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(roleIds)))
                 .andDo(
@@ -229,16 +244,16 @@ public class HelloControllerTest {
     @Test
     public void addMenu() throws Exception {
         HashMap<Object, Object> reqBody = new HashMap<>();
-        reqBody.put("parentId", 0);
-        reqBody.put("menuName", "任务管理");
-        reqBody.put("type", 0);
+        reqBody.put("parentId", 11);
+        reqBody.put("menuName", "创建任务");
+        reqBody.put("type", 1);
         reqBody.put("description", "");
-        reqBody.put("path", "/tasks");
+        reqBody.put("path", "/tasks/build");
         reqBody.put("menuIcon", "");
-        reqBody.put("sort", 1);
+        reqBody.put("sort", 2);
         reqBody.put("permissionId", new ArrayList<Long>());
 
-        mockMvc.perform(post("/api/v1/menus")
+        mockMvc.perform(post("/api/v1/menus").header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(reqBody)))
                 .andDo(
@@ -264,11 +279,11 @@ public class HelloControllerTest {
     @Test
     public void addPermission() throws Exception {
         HashMap<Object, Object> reqBody = new HashMap<>();
-        reqBody.put("name", "添加权限");
-        reqBody.put("path", "/api/v1/permissions");
+        reqBody.put("name", "登出");
+        reqBody.put("path", "/api/v1/logout");
         reqBody.put("method", "POST");
 
-        mockMvc.perform(post("/api/v1/permissions")
+        mockMvc.perform(post("/api/v1/permissions").header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(reqBody)))
                 .andDo(

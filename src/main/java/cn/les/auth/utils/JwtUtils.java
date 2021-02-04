@@ -22,7 +22,8 @@ public class JwtUtils {
     private static final String CLAIM_KEY_USER_ID = "userId";
     private static final String CLAIM_KEY_AUTHORITIES = "authorities";
     private static final String CLAIM_KEY_NICKNAME = "nickName";
-    private final Map<String, String> tokenMap = new HashMap<>();
+    private final Map<Long, String> tokenMap = new HashMap<>();
+    private final Map<Long, String> refreshTokenMap = new HashMap<>();
 
     @Value("${jwt.secret}")
     private String secret;
@@ -63,12 +64,14 @@ public class JwtUtils {
     public String generateAccessToken(UserDetail userDetail) {
 
         String token = generateToken(userDetail, accessTokenExpiration);
-        tokenMap.put(String.valueOf(userDetail.getId()), token);
+        tokenMap.put(userDetail.getId(), token);
         return token;
     }
 
     public String generateRefreshToken(UserDetail userDetail) {
-        return generateToken(userDetail, refreshTokenExpiration);
+        String refreshToken = generateToken(userDetail, refreshTokenExpiration);
+        refreshTokenMap.put(userDetail.getId(), refreshToken);
+        return refreshToken;
     }
 
     public Date getExpirationDateFromToken(String token) {
@@ -127,7 +130,7 @@ public class JwtUtils {
             if (userDetail == null) {
                 return null;
             }
-            String userId = String.valueOf(userDetail.getId());
+            Long userId = userDetail.getId();
             token = tokenMap.get(userId);
             if (isAccessTokenExpired(token)) {
                 token = generateAccessToken(userDetail);
@@ -137,18 +140,12 @@ public class JwtUtils {
         return token;
     }
 
-    public boolean checkValidToken(String token, String userId) {
+    public boolean checkValidToken(String token, Long userId) {
         return tokenMap.containsKey(userId) && tokenMap.get(userId).equals(token);
     }
 
-    public boolean removeToken(String token) {
-        final UserDetail userDetail = getUserDetailFromToken(token);
-        String id = String.valueOf(userDetail.getId());
-        if (tokenMap.containsKey(id) && tokenMap.get(id).equals(token)) {
-            tokenMap.remove(id);
-            return true;
-        }
-        return false;
+    public boolean removeToken(Long id) {
+        return tokenMap.remove(id) != null && refreshTokenMap.remove(id) != null;
     }
 
     private Map<String, Object> generateClaims(UserDetail userDetail) {

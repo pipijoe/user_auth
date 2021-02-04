@@ -16,4 +16,11 @@ public interface LoginService {
      * @return 用户基本信息
      */
     UserVO login(String userName, String password);
+
+    /**
+     * 登出
+     *
+     */
+    void logout();
+
 }

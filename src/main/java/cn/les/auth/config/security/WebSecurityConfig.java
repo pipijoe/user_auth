@@ -15,8 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.ExceptionTranslationFilter;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -30,15 +29,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
+    private final AccessDeniedHandler accessDeniedHandler;
+
     private final UserDetailsService customUserDetailsService;
 
     private final JwtAuthenticationTokenFilter authenticationTokenFilter;
 
     @Autowired
     public WebSecurityConfig(JwtAuthenticationEntryPoint unauthorizedHandler,
-                             @Qualifier("CustomUserDetailsService") UserDetailsService customUserDetailsService,
+                             AccessDeniedHandler accessDeniedHandler, @Qualifier("CustomUserDetailsService") UserDetailsService customUserDetailsService,
                              JwtAuthenticationTokenFilter authenticationTokenFilter) {
         this.unauthorizedHandler = unauthorizedHandler;
+        this.accessDeniedHandler = accessDeniedHandler;
         this.customUserDetailsService = customUserDetailsService;
         this.authenticationTokenFilter = authenticationTokenFilter;
     }
@@ -64,6 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+                .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/login","/api/v1/open/**", "/error/**", "/index.html","/docs/**").permitAll()
                 .and()

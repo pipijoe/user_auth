@@ -26,8 +26,14 @@ public class LoginController {
     }
 
     @PostMapping(value = "/login")
-    public ResultJson login(@Valid @RequestBody LoginUserDTO user) {
+    public ResultJson<UserVO> login(@Valid @RequestBody LoginUserDTO user) {
         UserVO userVO = loginService.login(user.getUsername(), user.getPassword());
         return ResultJson.ok(userVO);
+    }
+
+    @PostMapping(value = "/logout")
+    public ResultJson<Object> logout() {
+        loginService.logout();
+        return ResultJson.ok();
     }
 }

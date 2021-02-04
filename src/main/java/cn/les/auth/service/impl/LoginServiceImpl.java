@@ -50,6 +50,12 @@ public class LoginServiceImpl implements LoginService {
                 .build();
     }
 
+    @Override
+    public void logout() {
+        UserDetail userDetail = jwtTokenUtil.getUserDetailFromAuthContext();
+        jwtTokenUtil.removeToken(userDetail.getId());
+    }
+
 
     private Authentication authenticate(String username, String password) {
         try {
